@@ -21,17 +21,6 @@ class Entity:
         self.max_speed = 0.025
 
     def update_pos(self, screen_size):
-        keys = pygame.key.get_pressed()
-
-        if keys[pygame.K_w]:
-            self.velocity += self.vertical_accel
-        elif keys[pygame.K_s]:
-            self.velocity -= self.vertical_accel
-        if keys[pygame.K_d]:
-            self.velocity += self.lateral_accel
-        if keys[pygame.K_a]:
-            self.velocity -= self.lateral_accel
-
         # self.velocity.length() returns the Euclidean length of the vector
         if self.velocity.length() > self.max_speed:
             self.velocity.scale_to_length(self.max_speed)
