@@ -3,6 +3,7 @@
 # Lab 2: File I/O
 
 from maploader import loadMap
+from Entity import Entity
 import pygame
 
 class Map:
@@ -24,6 +25,7 @@ class Map:
         self.tiles_high = self.sprite_sheet.get_height() // self.header_data['tileheight']
         r,g,b,a = tuple(self.header_data['background_color']) if 'background_color' in self.header_data.keys() else (0,0,0,255)
         self.bg_color = pygame.Color(r,g,b,a)
+        self.player = Entity()  # Testing Entity class
 
     def draw(self,screen):
         tile_width = self.tile_sets_data[1]
@@ -42,4 +44,4 @@ class Map:
                     top_x = source_x*tile_width + source_x*gap_x
                     top_y = source_y*tile_height + source_y*gap_y
                     screen.blit(self.sprite_sheet,(x*tile_height,y*tile_width),pygame.Rect(top_x,top_y,tile_width,tile_height))
-
+                    self.player.draw((800, 600), screen)    # draw and update Entity in game loop
