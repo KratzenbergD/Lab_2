@@ -5,6 +5,8 @@
 from maploader import loadMap
 from Entity import Entity
 import pygame
+from config import *
+from tile import Tile
 
 class Map:
     """ This class generates a tile-based map
@@ -25,21 +27,37 @@ class Map:
         self.tiles_high = self.sprite_sheet.get_height() // self.header_data['tileheight']
         r,g,b,a = tuple(self.header_data['background_color']) if 'background_color' in self.header_data.keys() else (0,0,0,255)
         self.bg_color = pygame.Color(r,g,b,a)
+        self.tileSprites = pygame.sprite.Group()
+        self.wallSprites = pygame.sprite.Group()
+        self.addSprites()
 
-    def draw(self,screen):
+
+    def addSprites(self):
         tile_width = self.tile_sets_data[1]
         tile_height = self.tile_sets_data[2]
         gap_x = self.tile_sets_data[3]
         gap_y = self.tile_sets_data[4]
+        for i in range(1,len(self.layer_data)):
+            layer = self.layer_data[i]
+            for y in range(len(layer)):
+                row = layer[y]
+                for x in range(len(row)):
+                    index = row[x]
+                    if index:
+                        source_x = (index - 1) % self.tiles_wide
+                        source_y = index // self.tiles_wide
+                        top_x = source_x * tile_width + source_x * gap_x
+                        top_y = source_y * tile_height + source_y * gap_y
+                        tileImage = pygame.Surface((tile_width,tile_height))
+                        tileImage.blit(self.sprite_sheet, (0,0),
+                                    pygame.Rect(top_x, top_y, tile_width, tile_height))
+
+                        tile = Tile(tileImage,(int(x*tile_width),int(y*tile_height)))
+                        if index in WALL_SPRITES:
+                            self.wallSprites.add(tile)
+                        self.tileSprites.add(tile)
+
+
+    def draw(self,screen):
         screen.fill(self.bg_color)
-        layer = self.layer_data[2]       #iterate through each layer in our map
-        for y in range(len(layer)):     #iterate through each row in our map
-            row = layer[y]
-            for x in range(len(row)):
-                index = row[x]
-                if index:
-                    source_x = (index-1) % self.tiles_wide
-                    source_y = index // self.tiles_wide
-                    top_x = source_x*tile_width + source_x*gap_x
-                    top_y = source_y*tile_height + source_y*gap_y
-                    screen.blit(self.sprite_sheet,(x*tile_height,y*tile_width),pygame.Rect(top_x,top_y,tile_width,tile_height))
+        self.tileSprites.draw(screen)
