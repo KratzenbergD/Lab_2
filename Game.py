@@ -26,16 +26,16 @@ class Game:
             dt = self.clock.tick(60) / 1000.0
 
             # USER INPUT
-            self.event_manager.process_menu_input()
+            self.running = self.event_manager.process_menu_input()
 
+            if self.running:
+                #Game Input
+                self.event_manager.process_input(dt)
 
-            #Game Input
-            self.event_manager.process_input(dt)
+                #GAME UPDATE
 
-            #GAME UPDATE
-
-            # DRAWING
-            self.window.fill(self.bg_color)
-            self.map.draw(self.window)
-            self.player.draw(self.window)
-            pygame.display.flip()
+                # DRAWING
+                self.window.fill(self.bg_color)
+                self.map.draw(self.window)
+                self.player.draw(self.window)
+                pygame.display.flip()

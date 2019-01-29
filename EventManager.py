@@ -40,8 +40,9 @@ class EventManager:
         e = pygame.event.poll()
 
         if e.type == pygame.QUIT:
-            pygame.quit()
-            exit()
+            return False
         elif e.type == pygame.KEYDOWN:
             if e.key == pygame.K_ESCAPE:
-                self.stopGame()
+                return False
+
+        return True

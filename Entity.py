@@ -29,6 +29,7 @@ class Entity(pygame.sprite.Sprite):
         self.max_speed = 1
 
     def move(self,keys, dt):
+
         if keys[pygame.K_w]:
             self.velocity += self.vertical_accel * dt
         elif keys[pygame.K_s]:
@@ -37,6 +38,7 @@ class Entity(pygame.sprite.Sprite):
             self.velocity += self.lateral_accel * dt
         if keys[pygame.K_a]:
             self.velocity -= self.lateral_accel * dt
+
 
         # self.velocity.length() returns the Euclidean length of the vector
         if self.velocity.length() > self.max_speed:
