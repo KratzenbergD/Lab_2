@@ -60,4 +60,7 @@ class Map:
 
     def draw(self,screen):
         screen.fill(self.bg_color)
-        self.tileSprites.draw(screen)
+
+        #self.tileSprites.draw(screen)
+        for sprite in self.tileSprites.sprites():
+            sprite.draw(screen)

@@ -27,6 +27,10 @@ class Entity(pygame.sprite.Sprite):
         self.lateral_accel = vec(1, 0.0)  # accel vector pointing to the right
         self.vertical_accel = vec(0.0, -1) # accel vector pointing upward
         self.max_speed = 1
+        self.debug = False
+
+    def toggleDebug(self):
+        self.debug = not self.debug
 
     def move(self, keys, dt):
 
@@ -75,6 +79,7 @@ class Entity(pygame.sprite.Sprite):
         ### NOT WORKING AS INTENDED YET ###
         #HAVING VERTICAL AND HORIZONTAL VELOCITY AT THE SAME TIME PRODUCES UNEXPECTED RESULTS
 
+        diff_x = wallSprite.rect.center[0] - self.rect.
         # moving right
         if wallSprite.rect.center[0] - self.rect.center[0] > 0 and self.velocity.x > 0:
             self.rect.right = wallSprite.rect.left
@@ -100,5 +105,8 @@ class Entity(pygame.sprite.Sprite):
             self.position.y = self.rect.center[1]
 
     def draw(self, win):
+        self.image.fill(pygame.color.THECOLORS['black'])
         pygame.draw.circle(self.image, self.color, (default_size // 2, default_size // 2), default_size//2)
+        if self.debug:
+            pygame.draw.rect(self.image, pygame.color.THECOLORS['red'], (0,0,self.rect.w,self.rect.h),1)
         win.blit(self.image, self.rect)

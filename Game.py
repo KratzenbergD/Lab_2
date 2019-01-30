@@ -13,6 +13,11 @@ class Game:
         self.bg_color = (0,0,0)
         self.event_manager = EventManager()
         self.event_manager.addGameObject(self.player)
+        self.addMapTiles()
+
+    def addMapTiles(self):
+        for sprite in self.map.wallSprites.sprites():
+            self.event_manager.addGameObject(sprite)
 
     def startGame(self):
         self.running = True

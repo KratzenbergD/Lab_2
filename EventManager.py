@@ -27,6 +27,10 @@ class EventManager:
     def removeGameWindow(self, obj):
         self.game_objects['game_windows'].remove(obj)
 
+    def turnOnDebugMode(self):
+        for obj in self.game_objects['game_objects']:
+            obj.toggleDebug()
+
     def process_input(self, dt):
         """ This method processes user input."""
         keys = pygame.key.get_pressed()
@@ -44,5 +48,7 @@ class EventManager:
         elif e.type == pygame.KEYDOWN:
             if e.key == pygame.K_ESCAPE:
                 return False
+            elif e.key == pygame.K_F1:
+                self.turnOnDebugMode()
 
         return True
