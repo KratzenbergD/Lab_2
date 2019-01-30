@@ -1,0 +1,60 @@
+Approach 1
+	-large image (ww x wh), bg_image
+	-screen (smaller than ww x wh) (sw x sh)
+	-camera: a position (in world coordinates)
+
+	-Let's say ww x wh = (3000,2000)
+
+	let camera coordinates be (1400,800)
+	to scroll:
+		-move camera
+		-screen.blit(bg_img,(0,0),(camera[0],camera[1],sw,sh)
+
+	Approach 1 Disadvantages:
+		-not dynamic
+		-potentially a lot of memory
+
+Approach 2
+	-create a surface
+	-Render tiles to it
+	-use approach one for scrolling
+	-we can do the dynamic part (maybe)
+
+Approach 3
+	-Just render those tiles that are going to be on screen
+	-Draw straight to the screen (big image not needed)
+	-Dynamic
+	-Requires a modification to tile rendering
+
+
+camera draw code
+tile_x = camera_x // tile_width
+tile_y = camera_y // tile_height
+num_x = screen_w // tile_width
+num_y = screen_h // tile_height
+x_offset = camera_x % tile_width
+y_offset = camera_y % tile_height
+
+y = -y_offset
+for i in range(tile_y,num_y + tile_y - 1):
+	if i >= 0 and i < map_height:
+		row = self.map_codes[i]
+		x = -x_offset
+		for j in range(tile_x, num_x + tile_x + 1):
+			if j >= 0 and j < map_width:
+				tile_code = row[j]
+			x += tile_width
+	y += tile_height
+
+World vs Screen coordinates
+
+Use world coordinates for:
+	camera position
+	player position
+	pickup position
+
+Use screen coordinates for:
+	drawing only
+
+screen_x = world_x - camera_x
+screen_y = world_y - camera_y
