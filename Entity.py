@@ -13,29 +13,31 @@ class Entity(pygame.sprite.Sprite):
         Game Entities(Player, Enemy, Etc.)
         inherit from."""
 
-    def __init__(self):
+    ### Add parameter specifying sprite image file?
+    def __init__(self, sprite_img):
         super().__init__()
-        self.image = pygame.Surface((default_size,default_size))
+        self.image = pygame.Surface((default_size, default_size))
+        self.sprite_img = pygame.image.load(sprite_img)
+        self.sprite_img = pygame.transform.scale(self.sprite_img, (default_size, default_size))
         self.image.set_colorkey(pygame.color.THECOLORS['black'])
-        self.color = (random.randint(0, 255),
-                 random.randint(0, 255),
-                 random.randint(0, 255)
-                 )
         self.rect = self.image.get_rect()
         self.prevPos = vec(400, 400)
         self.position = vec(400, 400)
         self.rect.center = (int(self.position.x),int(self.position.y))
         self.velocity = vec(0, 0)
         self.lateral_accel = vec(3, 0.0)  # accel vector pointing to the right
-        self.vertical_accel = vec(0.0, -3) # accel vector pointing upward
+        self.vertical_accel = vec(0.0, -3)  # accel vector pointing upward
         self.max_speed = 5
         self.debug = False
 
     def toggleDebug(self):
+        """ This method toggles debug mode
+            for the Entity."""
         self.debug = not self.debug
 
     def move(self, keys, dt):
-
+        """ This is the generic movement method used by Entities.
+            Will most likely be overridden in derived classes."""
         hasMoved = False
         if keys[pygame.K_w]:
             self.velocity += self.vertical_accel * dt
@@ -49,7 +51,6 @@ class Entity(pygame.sprite.Sprite):
         if keys[pygame.K_a]:
             self.velocity -= self.lateral_accel * dt
             hasMoved = True
-
 
         # if the entity is not currently moving, decrease their velocity until it reaches 0
         if not hasMoved:
@@ -70,13 +71,15 @@ class Entity(pygame.sprite.Sprite):
             self.rect.center = (int(self.position.x),int(self.position.y))
 
     def update(self, keys, dt):
+        """ The generic Entity update method.
+            Will most likely be overridden by derived classes."""
         self.move(keys, dt)
-        self.color = (random.randint(0, 255),
-                      random.randint(0, 255),
-                      random.randint(0, 255)
-                      )
 
-    def handleCollission(self):
+    def handleCollision(self):
+        """ The generic collision detection method.
+            The Entity's previous position is stored
+            so that they can be moved back in the event
+            of a wall collision."""
         ### CANNOT WALLSLIDE PERFECTLY
 
         self.position = self.prevPos - self.velocity
@@ -85,10 +88,12 @@ class Entity(pygame.sprite.Sprite):
         self.rect.center = (int(self.position.x), int(self.position.y))
 
     def draw(self, win):
+        """ The generic Entity draw method.
+            Will definitely be overridden in derived classes."""
         self.image.fill(pygame.color.THECOLORS['black'])
-        pygame.draw.circle(self.image, self.color, (default_size // 2, default_size // 2), default_size//2)
+        self.image.blit(self.sprite_img, (0, 0))
         if self.debug:
-            pygame.draw.rect(self.image, pygame.color.THECOLORS['red'], (0,0,self.rect.w,self.rect.h),1)
+            pygame.draw.rect(self.image, pygame.color.THECOLORS['red'], (0, 0, self.rect.w, self.rect.h), 1)
         win.blit(self.image, self.rect)
 
 

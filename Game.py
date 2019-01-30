@@ -2,6 +2,8 @@ import pygame
 from Map import *
 from config import *
 from EventManager import *
+
+
 class Game:
     def __init__(self):
         """Initialize game variables"""
@@ -9,7 +11,7 @@ class Game:
         self.map = Map('Maps/map.txt', 'images/ProjectUtumno_full.png', screen_size)
         self.running = False
         self.window = pygame.display.set_mode(screen_size)
-        self.player = Entity()
+        self.player = Entity('images/star.png')
         self.bg_color = (0,0,0)
         self.event_manager = EventManager()
         self.event_manager.addGameObject(self.player)
@@ -36,9 +38,9 @@ class Game:
             if self.running:
                 #GAME UPDATE
 
-                wallCollissions = pygame.sprite.spritecollide(self.player, self.map.wallSprites, False)
-                if wallCollissions:
-                    self.player.handleCollission()
+                wallCollisions = pygame.sprite.spritecollide(self.player, self.map.wallSprites, False)
+                if wallCollisions:
+                    self.player.handleCollision()
 
                 # Game Input
                 self.event_manager.process_input(dt)

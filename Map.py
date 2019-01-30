@@ -57,7 +57,6 @@ class Map:
                             self.wallSprites.add(tile)
                         self.tileSprites.add(tile)
 
-
     def draw(self,screen):
         screen.fill(self.bg_color)
 
