@@ -2,6 +2,8 @@ import pygame
 from Map import *
 from config import *
 from EventManager import *
+from Entity import *
+from Player import *
 
 
 class Game:
@@ -12,7 +14,7 @@ class Game:
         self.map = Map('Maps/map.txt', 'images/ProjectUtumno_full.png', screen_size)
         self.running = False
         self.window = pygame.display.set_mode(screen_size)
-        self.player = Entity('images/star.png')
+        self.player = Player('images/star.png')
         self.bg_color = (0,0,0)
         self.event_manager = EventManager()
         self.event_manager.addGameObject(self.player)
