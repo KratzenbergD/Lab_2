@@ -34,6 +34,10 @@ class Game:
 
                 #GAME UPDATE
 
+                wallCollissions = pygame.sprite.spritecollide(self.player, self.map.wallSprites, False)
+                if wallCollissions:
+                    self.player.handleCollission(wallCollissions[0])
+
                 # DRAWING
                 self.window.fill(self.bg_color)
                 self.map.draw(self.window)
