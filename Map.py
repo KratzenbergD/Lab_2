@@ -3,10 +3,10 @@
 # Lab 2: File I/O
 
 from maploader import loadMap
-from Entity import Entity
 import pygame
 from config import *
 from tile import Tile
+
 
 class Map:
     """ This class generates a tile-based map
@@ -31,8 +31,9 @@ class Map:
         self.wallSprites = pygame.sprite.Group()
         self.addSprites()
 
-
     def addSprites(self):
+        """ This method adds all the map data into a
+            Sprite group."""
         tile_width = self.tile_sets_data[1]
         tile_height = self.tile_sets_data[2]
         gap_x = self.tile_sets_data[3]
@@ -57,9 +58,11 @@ class Map:
                             self.wallSprites.add(tile)
                         self.tileSprites.add(tile)
 
-    def draw(self,screen):
+    def draw(self, screen):
+        """ This method handles drawing each Tile
+            contained in the Map's Tile list."""
         screen.fill(self.bg_color)
 
-        #self.tileSprites.draw(screen)
+        # self.tileSprites.draw(screen)
         for sprite in self.tileSprites.sprites():
             sprite.draw(screen)
