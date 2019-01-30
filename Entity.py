@@ -13,7 +13,6 @@ class Entity(pygame.sprite.Sprite):
         Game Entities(Player, Enemy, Etc.)
         inherit from."""
 
-    ### Add parameter specifying sprite image file?
     def __init__(self, sprite_img):
         super().__init__()
         self.image = pygame.Surface((default_size, default_size))

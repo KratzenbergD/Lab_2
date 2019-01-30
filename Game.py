@@ -5,6 +5,7 @@ from EventManager import *
 
 
 class Game:
+    """ This class contains the main game loop."""
     def __init__(self):
         """Initialize game variables"""
         self.clock = pygame.time.Clock()
@@ -18,16 +19,23 @@ class Game:
         self.addMapTiles()
 
     def addMapTiles(self):
+        """ This method adds map tile objects to
+            the event_manager's object list"""
         for sprite in self.map.wallSprites.sprites():
             self.event_manager.addGameObject(sprite)
 
     def startGame(self):
+        """ Sets the running flag to True, signaling
+            the game loop to start."""
         self.running = True
 
     def stopGame(self):
+        """ Sets the running flag to False, signaling
+            the game loop to stop."""
         self.running = False
 
     def runGameLoop(self):
+        """ This method handles the main game loop."""
         while self.running:
             # UPDATES
             dt = self.clock.tick(60) / 1000.0
