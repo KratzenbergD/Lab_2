@@ -14,9 +14,9 @@ class Tile(pygame.sprite.Sprite):
         self.debug = not self.debug
 
     def draw(self,win):
-        if self.debug:
-            pygame.draw.rect(self.image, pygame.color.THECOLORS['red'], (0,0,self.rect.w,self.rect.h),1)
         win.blit(self.image,self.rect)
+        if self.debug:
+            pygame.draw.rect(win, pygame.color.THECOLORS['red'], self.rect,1)
 
 
 

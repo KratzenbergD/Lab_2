@@ -34,14 +34,14 @@ class Game:
             self.running = self.event_manager.process_menu_input()
 
             if self.running:
-                #Game Input
-                self.event_manager.process_input(dt)
-
                 #GAME UPDATE
 
                 wallCollissions = pygame.sprite.spritecollide(self.player, self.map.wallSprites, False)
                 if wallCollissions:
-                    self.player.handleCollission(wallCollissions[0])
+                    self.player.handleCollission()
+
+                # Game Input
+                self.event_manager.process_input(dt)
 
                 # DRAWING
                 self.window.fill(self.bg_color)
