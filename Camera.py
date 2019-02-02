@@ -93,6 +93,10 @@ class Camera():
                                 if tile_code in WALL_SPRITES:
                                     self.focusedWalls.add(tile)
                                 self.focusedTiles.add(tile)
+                        else:
+                            break
+                else:
+                    break
 
 
 
