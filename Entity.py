@@ -38,28 +38,23 @@ class Entity(pygame.sprite.Sprite):
         """ This is the generic movement method used by Entities.
             Will most likely be overridden in derived classes."""
         hasMoved = False
+        movedHorizontal = False
+        movedVertical = False
         if keys[pygame.K_w]:
             self.velocity += self.vertical_accel * dt
-            hasMoved = True
+            movedVertical = True
         elif keys[pygame.K_s]:
             self.velocity -= self.vertical_accel * dt
-            hasMoved = True
+            movedVertical = True
         if keys[pygame.K_d]:
             self.velocity += self.lateral_accel * dt
-            hasMoved = True
+            movedHorizontal = True
         if keys[pygame.K_a]:
             self.velocity -= self.lateral_accel * dt
-            hasMoved = True
+            movedHorizontal = True
 
         # if the entity is not currently moving, decrease their velocity until it reaches 0
-        if not hasMoved:
-            self.velocity.x -= self.velocity.x / 20
-            self.velocity.y -= self.velocity.y / 20
-            if abs(self.velocity.x) < 0.1:
-                    self.velocity.x = 0
-            if abs(self.velocity.y) < 0.1:
-                    self.velocity.y = 0
-        else:
+        if movedHorizontal or movedVertical:
             self.prevPos = self.position
 
             # self.velocity.length() returns the Euclidean length of the vector
@@ -68,6 +63,16 @@ class Entity(pygame.sprite.Sprite):
 
             self.position += self.velocity
             self.rect.center = (int(self.position.x),int(self.position.y))
+
+        if not movedHorizontal:
+            self.velocity.x /=  20
+            if abs(self.velocity.x) < 0.1:
+                self.velocity.x = 0
+
+        if not movedVertical:
+            self.velocity.y /= 20
+            if abs(self.velocity.y) < 0.1:
+                self.velocity.y = 0
 
     def update(self, keys, dt):
         """ The generic Entity update method.
@@ -86,14 +91,14 @@ class Entity(pygame.sprite.Sprite):
         self.velocity.y = 0
         self.rect.center = (int(self.position.x), int(self.position.y))
 
-    def draw(self, win):
+    def draw(self, win, cameraPos):
         """ The generic Entity draw method.
             Will definitely be overridden in derived classes."""
         self.image.fill(pygame.color.THECOLORS['black'])
         self.image.blit(self.sprite_img, (0, 0))
         if self.debug:
             pygame.draw.rect(self.image, pygame.color.THECOLORS['red'], (0, 0, self.rect.w, self.rect.h), 1)
-        win.blit(self.image, self.rect)
+        win.blit(self.image, (self.rect.left - cameraPos[0],self.rect.top - cameraPos[1],self.rect.w,self.rect.h))
 
 
 

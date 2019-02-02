@@ -18,11 +18,11 @@ class Player(Entity):
         self.hp_rect = pygame.rect.Rect(10, 10, self.hp_bar_width, 15)
         self.hp_rect_frame = pygame.rect.Rect(10, 10, self.hp_bar_width, 15)
 
-    def draw(self, win):
+    def draw(self, win,cameraPos):
         """ The Player draw method.
             Things like HP bar, Player sprite, etc.
             will be handled here."""
-        super().draw(win)
+        super().draw(win,cameraPos)
         pygame.draw.rect(win, (0, 0, 255), self.hp_rect)
         pygame.draw.rect(win, (255, 255, 255), self.hp_rect_frame, 2)
 
@@ -51,3 +51,6 @@ class Player(Entity):
         if self.cur_hp < self.max_hp:
             self.cur_hp += 1
             self.hp_rect.width = (self.cur_hp / self.max_hp) * self.hp_bar_width
+
+    def getPos(self):
+        return (self.position.x, self.position.y)
