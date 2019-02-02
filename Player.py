@@ -46,7 +46,7 @@ class Player(Entity):
             self.hp_rect.width = (self.cur_hp / self.max_hp) * self.hp_bar_width
 
     def restore_hp(self):
-        """ This method restores the Player;s
+        """ This method restores the Player's
             current hp."""
         if self.cur_hp < self.max_hp:
             self.cur_hp += 1
