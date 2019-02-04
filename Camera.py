@@ -17,7 +17,7 @@ class Camera():
         r, g, b, a = tuple(map.header_data['background_color']) if 'background_color' in map.header_data.keys() else (
         0, 0, 0, 255)
         self.bg_color = pygame.Color(r, g, b, a)
-        self.view.set_alpha(self.bg_color)
+        self.view.set_colorkey(self.bg_color)
         self.focusedTiles = pygame.sprite.Group()
         self.focusedWalls = pygame.sprite.Group()
         self.debug = False
@@ -49,9 +49,6 @@ class Camera():
     def updateMapView(self):
         """Grabs tiles out of map and blits them to the camera viewing surface"""
 
-        self.focusedWalls.empty()
-        self.focusedTiles.empty()
-
         tile_width = self.map.tile_sets_data[1]
         tile_height = self.map.tile_sets_data[2]
         map_width = self.map.header_data['width']
@@ -64,42 +61,57 @@ class Camera():
         num_tiles_x = int(math.ceil(screen_size[0] / tile_width))+1
         num_tiles_y = int(math.ceil(screen_size[1] / tile_height))+1
 
-        x_offset = int(self.pos[0]) % tile_width
-        y_offset = int(self.pos[1]) % tile_height
+        onScreenIndexes = []
+        #remove or update tiles on screen
 
+        for tile in self.focusedTiles.sprites():
+            x_index = int(tile.world_rect.left / tile_width)
+            y_index = int(tile.world_rect.top / tile_height)
+            if x_index not in range(col,num_tiles_x+col) or y_index not in range(row,row+num_tiles_y):
+                self.focusedTiles.remove(tile)
+                if tile in self.focusedWalls.sprites():
+                    self.focusedWalls.remove(tile)
+            else:
+                screen_x = int(tile.world_rect.left - self.pos[0])
+                screen_y = int(tile.world_rect.top - self.pos[1])
+                tile.rect.topleft = (screen_x,screen_y)
+                onScreenIndexes.append((x_index,y_index))
+
+        #x_offset = int(self.pos[0]) % tile_width
+        #y_offset = int(self.pos[1]) % tile_height
         self.view.fill(self.bg_color)
         #x_offset and y_offset need to be handled y = -yo_offset, x = -x_offset
         #y = -y_offset
         #x = -x_offset
+
         for i in range(len(self.map.layer_data)):
             layer = self.map.layer_data[i]
             for y_index in range(row,int(row+num_tiles_y)):
                 if y_index >= 0 and y_index < map_height-1:
                     current_row = layer[y_index]
                     for x_index in range(col,col + num_tiles_x):
+                        check = (x_index,y_index)
                         if x_index >= 0 and x_index < map_width:
-                            tile_code = current_row[x_index]
-                            if tile_code:
-                                source_x = (tile_code - 1) % self.map.tiles_wide
-                                source_y = tile_code // self.map.tiles_wide
-                                top_x = (source_x * tile_width + source_x * gap_x)
-                                top_y = source_y * tile_height + source_y * gap_y
-                                tileImage = pygame.Surface((tile_width, tile_height))
+                            if check not in onScreenIndexes:
+                                tile_code = current_row[x_index]
+                                if tile_code:
+                                    source_x = (tile_code - 1) % self.map.tiles_wide
+                                    source_y = tile_code // self.map.tiles_wide
+                                    top_x = (source_x * tile_width + source_x * gap_x)
+                                    top_y = source_y * tile_height + source_y * gap_y
+                                    tileImage = pygame.Surface((tile_width, tile_height))
 
-                                tileImage.blit(self.map.sprite_sheet, (0, 0),
-                                               pygame.Rect(top_x, top_y, tile_width, tile_height))
-                                tileImage.set_colorkey(self.bg_color)
-                                screen_x = x_index*tile_width - self.pos[0]
-                                screen_y = y_index*tile_width - self.pos[1]
-                                tile = Tile(tileImage, (int(screen_x), int(screen_y)),(x_index*tile_width,y_index*tile_height))
-                                self.view.blit(tile.image,tile.rect)
-                                if tile_code in WALL_SPRITES:
-                                    self.focusedWalls.add(tile)
-                                self.focusedTiles.add(tile)
-                        else:
-                            break
-                else:
-                    break
+                                    tileImage.blit(self.map.sprite_sheet, (0, 0),
+                                                   pygame.Rect(top_x, top_y, tile_width, tile_height))
+                                    tileImage.set_colorkey(self.bg_color)
+                                    screen_x = x_index*tile_width - self.pos[0]
+                                    screen_y = y_index*tile_width - self.pos[1]
+                                    tile = Tile(tileImage, (int(screen_x), int(screen_y)),(x_index*tile_width,y_index*tile_height))
+                                    self.view.blit(tile.image,tile.rect)
+                                    if tile_code in WALL_SPRITES:
+                                        self.focusedWalls.add(tile)
+                                    self.focusedTiles.add(tile)
+
 
 
     def toggleDebug(self):
