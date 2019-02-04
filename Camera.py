@@ -17,6 +17,7 @@ class Camera():
         r, g, b, a = tuple(map.header_data['background_color']) if 'background_color' in map.header_data.keys() else (
         0, 0, 0, 255)
         self.bg_color = pygame.Color(r, g, b, a)
+        self.view.set_alpha(self.bg_color)
         self.focusedTiles = pygame.sprite.Group()
         self.focusedWalls = pygame.sprite.Group()
         self.debug = False
@@ -84,9 +85,10 @@ class Camera():
                                 top_x = (source_x * tile_width + source_x * gap_x)
                                 top_y = source_y * tile_height + source_y * gap_y
                                 tileImage = pygame.Surface((tile_width, tile_height))
+
                                 tileImage.blit(self.map.sprite_sheet, (0, 0),
                                                pygame.Rect(top_x, top_y, tile_width, tile_height))
-
+                                tileImage.set_colorkey(self.bg_color)
                                 screen_x = x_index*tile_width - self.pos[0]
                                 screen_y = y_index*tile_width - self.pos[1]
                                 tile = Tile(tileImage, (int(screen_x), int(screen_y)),(x_index*tile_width,y_index*tile_height))

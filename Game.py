@@ -12,7 +12,7 @@ class Game:
     def __init__(self):
         """Initialize game variables"""
         self.clock = pygame.time.Clock()
-        self.map = Map('Maps/test_map5.txt', 'images/ProjectUtumno_full.png', screen_size)
+        self.map = Map('Maps/map0.txt', 'images/ProjectUtumno_full.png', screen_size)
         self.running = False
         self.window = pygame.display.set_mode(screen_size)
         self.player = Player('images/star.png')
