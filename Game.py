@@ -20,6 +20,7 @@ class Game:
         self.event_manager = EventManager()
         self.event_manager.addGameObject(self.player)
         self.camera = Camera(self.map)
+        self.event_manager.addGameObject(self.camera)
 
     # def addMapTiles(self):
     #     """ This method adds map tile objects to

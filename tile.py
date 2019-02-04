@@ -18,12 +18,6 @@ class Tile(pygame.sprite.Sprite):
     def collide_rect(self,otherRect):
         return self.world_rect.colliderect(otherRect)
 
-    def toggleDebug(self):
-        """ Toggles the debug flag, which signals
-            whether to draw debug information to
-            the game screen."""
-        self.debug = not self.debug
-
     def draw(self,win):
         win.blit(self.image,self.rect)
         if self.debug:

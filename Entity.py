@@ -26,7 +26,7 @@ class Entity(pygame.sprite.Sprite):
         self.velocity = vec(0, 0)
         self.lateral_accel = vec(3, 0.0)  # accel vector pointing to the right
         self.vertical_accel = vec(0.0, -3)  # accel vector pointing upward
-        self.max_speed = 5
+        self.max_speed = 10
         self.debug = False
 
     def toggleDebug(self):
