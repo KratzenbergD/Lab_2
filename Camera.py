@@ -28,13 +28,13 @@ class Camera():
         topLeftX = playerPos[0] - (screen_size[0] / 2)
         topLeftY = playerPos[1] - (screen_size[1] / 2)
         if topLeftX + screen_size[0] > self.map.totalMapWidth:
-            topLeftX = self.pos[0]
+            topLeftX = self.map.totalMapWidth - screen_size[0]
 
         if topLeftX < 0:
             topLeftX = 0
 
         if topLeftY + screen_size[1] > self.map.totalMapHeight:
-            topLeftY = self.pos[1]
+            topLeftY = self.map.totalMapHeight - screen_size[1]
 
         if topLeftY < 0:
             topLeftY = 0
@@ -58,12 +58,12 @@ class Camera():
         gap_x = self.map.tile_sets_data[3]
         gap_y = self.map.tile_sets_data[4]
 
-        num_tiles_x = int(math.ceil(screen_size[0] / tile_width))+1
+        num_tiles_x = int(math.ceil(screen_size[0] / tile_width))
         num_tiles_y = int(math.ceil(screen_size[1] / tile_height))+1
 
         onScreenIndexes = []
-        #remove or update tiles on screen
 
+        #remove or update tiles on screen
         for tile in self.focusedTiles.sprites():
             x_index = int(tile.world_rect.left / tile_width)
             y_index = int(tile.world_rect.top / tile_height)
