@@ -88,7 +88,7 @@ class Camera():
             layer = self.map.layer_data[i]
             for y_index in range(row,int(row+num_tiles_y)):
                 if y_index >= 0 and y_index < map_height:
-                    current_row = layer[y_index % (map_height-1)]   # CHANGED THIS LINE
+                    current_row = layer[y_index]   # FIXED
                     for x_index in range(col,col + num_tiles_x):
                         check = (x_index,y_index)
                         if x_index >= 0 and x_index < map_width:

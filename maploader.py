@@ -53,7 +53,8 @@ def loadMap(filename):
                 tileStr = line.split(',')
                 lineData = [int(datum) for datum in tileStr if len(datum)]
                 tileData.append(lineData)
-                if dataCount == map_h - 1:
+                if dataCount == map_h:
+                    print(lineData)
                     readingData = False
                     layerData.append(tileData)
             if 'data' in line:
