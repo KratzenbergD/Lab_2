@@ -34,6 +34,53 @@ class EventManager:
     def process_input(self, dt):
         """ This method processes user input."""
         keys = pygame.key.get_pressed()
+        temp = None
+        # initialize game_pad to None
+        game_pad = None
+
+        # check to see if any game pads are connected
+        if pygame.joystick.get_count() > 0:
+            game_pad = pygame.joystick.Joystick(0)
+            # 360 pad buttons: 0 = 'A', 1 = 'B', 2 = 'X', 3 = 'Y'
+            #                : 4 = 'LB', 5 = 'RB', 6 = 'Back', 7 = 'Start'
+            #                : 8 = 'L3', 9 = 'R3'
+
+        if game_pad is not None:
+            temp = [x for x in keys]
+            # check horizontal axis on left analog stick
+            if game_pad.get_axis(0) < -0.25:
+                temp[pygame.K_a] = True
+            elif game_pad.get_axis(0) > 0.25:
+                temp[pygame.K_d] = True
+
+            # check vertical axis on left analog stick
+            if game_pad.get_axis(1) < -0.25:
+                temp[pygame.K_w] = True
+            elif game_pad.get_axis(1) > 0.25:
+                temp[pygame.K_s] = True
+
+            # check status of buttons
+            if game_pad.get_button(0):
+                # fill out later
+                pass
+            if game_pad.get_button(1):
+                pass
+            if game_pad.get_button(2):
+                pass
+            if game_pad.get_button(3):
+                pass
+            if game_pad.get_button(5):
+                pass
+            if game_pad.get_button(6):
+                pass
+            if game_pad.get_button(7):
+                pass
+            if game_pad.get_button(8):
+                pass
+            if game_pad.get_button(9):
+                pass
+
+            keys = tuple(temp)
 
         for key in self.game_objects:
             list = self.game_objects[key]

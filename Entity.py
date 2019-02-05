@@ -49,7 +49,7 @@ class Entity(pygame.sprite.Sprite):
         if keys[pygame.K_d]:
             self.velocity += self.lateral_accel * dt
             movedHorizontal = True
-        if keys[pygame.K_a]:
+        elif keys[pygame.K_a]:
             self.velocity -= self.lateral_accel * dt
             movedHorizontal = True
 
@@ -65,12 +65,12 @@ class Entity(pygame.sprite.Sprite):
             self.rect.center = (int(self.position.x),int(self.position.y))
 
         if not movedHorizontal:
-            self.velocity.x /=  20
+            self.velocity.x /= 50
             if abs(self.velocity.x) < 0.1:
                 self.velocity.x = 0
 
         if not movedVertical:
-            self.velocity.y /= 20
+            self.velocity.y /= 50
             if abs(self.velocity.y) < 0.1:
                 self.velocity.y = 0
 
