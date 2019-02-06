@@ -2,6 +2,7 @@ import pygame
 from config import *
 from tile import *
 import math
+from WarpTile import *
 
 class Camera():
 
@@ -20,7 +21,17 @@ class Camera():
         self.view.set_colorkey(self.bg_color)
         self.focusedTiles = pygame.sprite.Group()
         self.focusedWalls = pygame.sprite.Group()
+        self.interactiveTiles = pygame.sprite.Group()
+        self.warpTiles = pygame.sprite.Group()
         self.debug = False
+
+    def setMap(self,map):
+        self.map = map
+        self.focusedTiles.empty()
+        self.focusedWalls.empty()
+        self.interactiveTiles.empty()
+        self.warpTiles.empty()
+
 
     def setCameraPosition(self,playerPos):
         """Updates camera position based on location of player"""
@@ -58,7 +69,7 @@ class Camera():
         gap_x = self.map.tile_sets_data[3]
         gap_y = self.map.tile_sets_data[4]
 
-        num_tiles_x = int(math.ceil(screen_size[0] / tile_width))
+        num_tiles_x = int(math.ceil(screen_size[0] / tile_width))+1
         num_tiles_y = int(math.ceil(screen_size[1] / tile_height))+1
 
         onScreenIndexes = []
@@ -77,12 +88,7 @@ class Camera():
                 tile.rect.topleft = (screen_x,screen_y)
                 onScreenIndexes.append((x_index,y_index))
 
-        #x_offset = int(self.pos[0]) % tile_width
-        #y_offset = int(self.pos[1]) % tile_height
         self.view.fill(self.bg_color)
-        #x_offset and y_offset need to be handled y = -yo_offset, x = -x_offset
-        #y = -y_offset
-        #x = -x_offset
 
         for i in range(len(self.map.layer_data)):
             layer = self.map.layer_data[i]
@@ -110,6 +116,13 @@ class Camera():
                                     self.view.blit(tile.image,tile.rect)
                                     if tile_code in WALL_SPRITES:
                                         self.focusedWalls.add(tile)
+                                    elif tile_code in WARP_SPRITES:
+                                        self.warpTiles.add( WarpTile(
+                                            tileImage, (int(screen_x), int(screen_y)),
+                                            (x_index * tile_width, y_index * tile_height),
+                                            tile_code
+                                        ))
+
                                     self.focusedTiles.add(tile)
 
 
@@ -126,11 +139,6 @@ class Camera():
             if self.debug:
                 if tile in self.focusedWalls.sprites():
                     pygame.draw.rect(screen,pygame.color.THECOLORS['red'],tile.rect,2)
-
-        #screen.blit(self.view,(0,0))
-        #self.tileSprites.draw(screen)
-        #for sprite in self.focusedTiles.sprites():
-        #    sprite.draw(screen)
 
     def update(self,*args):
         pass

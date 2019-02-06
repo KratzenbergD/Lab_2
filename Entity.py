@@ -43,7 +43,7 @@ class Entity(pygame.sprite.Sprite):
         if keys[pygame.K_w]:
             self.velocity += self.vertical_accel * dt
             movedVertical = True
-        elif keys[pygame.K_s]:
+        if keys[pygame.K_s]:
             self.velocity -= self.vertical_accel * dt
             movedVertical = True
         if keys[pygame.K_d]:
@@ -52,6 +52,7 @@ class Entity(pygame.sprite.Sprite):
         elif keys[pygame.K_a]:
             self.velocity -= self.lateral_accel * dt
             movedHorizontal = True
+
 
         # if the entity is not currently moving, decrease their velocity until it reaches 0
         if movedHorizontal or movedVertical:

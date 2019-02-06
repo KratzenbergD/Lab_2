@@ -9,6 +9,7 @@ from Game import *
 
 # Initialization
 pygame.init()
+pygame.joystick.init()
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 pygame.display.set_caption("Test Map")

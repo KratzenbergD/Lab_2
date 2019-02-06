@@ -12,21 +12,26 @@ class Game:
     def __init__(self):
         """Initialize game variables"""
         self.clock = pygame.time.Clock()
-        self.map = Map('Maps/map_shop.txt', 'images/ProjectUtumno_full.png', screen_size)
+        self.current_map = Map('Maps/map0.txt', 'images/ProjectUtumno_full.png', screen_size)
+        self.maps = {
+            "world":Map('Maps/map0.txt', 'images/ProjectUtumno_full.png', screen_size),
+            "shop": Map('Maps/map_shop.txt', 'images/ProjectUtumno_full.png', screen_size),
+            "dungeon":Map('Maps/map0.txt', 'images/ProjectUtumno_full.png', screen_size),
+        }
+
         self.running = False
         self.window = pygame.display.set_mode(screen_size)
         self.player = Player('images/star.png')
         self.bg_color = (0,0,0)
         self.event_manager = EventManager()
         self.event_manager.addGameObject(self.player)
-        self.camera = Camera(self.map)
+        self.camera = Camera(self.current_map)
         self.event_manager.addGameObject(self.camera)
-
-    # def addMapTiles(self):
-    #     """ This method adds map tile objects to
-    #         the event_manager's object list"""
-    #     for sprite in self.map.wallSprites.sprites():
-    #         self.event_manager.addGameObject(sprite)
+        self.warpCoordinates = {
+            "world": (self.player.position.x,self.player.position.y),
+            "shop": (400,400),
+            "dungeon": (400,400),
+        }
 
     def startGame(self):
         """ Sets the running flag to True, signaling
@@ -57,6 +62,13 @@ class Game:
                 for sprite in self.camera.focusedWalls.sprites():
                     if sprite.collide_rect(self.player.rect):
                         self.player.handleCollision()
+
+                for warpTile in self.camera.warpTiles.sprites():
+                    if sprite.collide_rect(self.player.rect):
+                        self.player.setPos(self.warpCoordinates[warpTile.mapName])
+                        self.camera.setMap(self.maps[warpTile.mapName])
+                        self.current_map = self.maps[warpTile.mapName]
+
 
                 #Make Camera Follow the Player
                 self.camera.setCameraPosition(self.player.getPos())
