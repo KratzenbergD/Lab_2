@@ -68,14 +68,13 @@ class Game:
                     if warpTile.collide_rect(self.player.rect):
                         coords = None
                         if self.current_map_name == "world":
-                            coords = self.warpCoordinates[warpTile.mapName][0]  #Warp to Other Location
+                            coords = self.warpCoordinates[warpTile.mapName][0]  #Warp To
                         else:
-                            coords = self.warpCoordinates[warpTile.mapName][1]  #Warp to World Map Coordinates
-                        print(self.player.getPos())
+                            coords = self.warpCoordinates[self.current_map_name][1]  #Warp From
                         self.player.setPos(coords)
                         self.camera.setMap(self.maps[warpTile.mapName])
                         self.current_map = self.maps[warpTile.mapName]
-                        self.current_map_name = warpTile.mapName
+
 
 
                 #Make Camera Follow the Player
