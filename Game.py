@@ -29,7 +29,7 @@ class Game:
         self.camera = Camera(self.current_map)
         self.event_manager.addGameObject(self.camera)
         self.warpCoordinates = {
-            "world": (self.player.position.x,self.player.position.y),
+            "world": [(self.player.position.x,self.player.position.y), (400, 400)],
             "shop": [(320,600),(1376,352)],
             "dungeon": (400,400),
         }
@@ -70,7 +70,7 @@ class Game:
                         if self.current_map_name == "world":
                             coords = self.warpCoordinates[warpTile.mapName][0]  #Warp To
                         else:
-                            coords = self.warpCoordinates[self.current_map_name][1]  #Warp From
+                            coords = self.warpCoordinates[warpTile.mapName][1]  #Warp From
                         self.player.setPos(coords)
                         self.camera.setMap(self.maps[warpTile.mapName])
                         self.current_map = self.maps[warpTile.mapName]
