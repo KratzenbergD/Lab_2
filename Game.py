@@ -13,6 +13,7 @@ class Game:
         """Initialize game variables"""
         self.clock = pygame.time.Clock()
         self.current_map = Map('Maps/map0.txt', 'images/ProjectUtumno_full.png', screen_size)
+        self.current_map_name = "world"
         self.maps = {
             "world":Map('Maps/map0.txt', 'images/ProjectUtumno_full.png', screen_size),
             "shop": Map('Maps/map_shop.txt', 'images/ProjectUtumno_full.png', screen_size),
@@ -29,7 +30,7 @@ class Game:
         self.event_manager.addGameObject(self.camera)
         self.warpCoordinates = {
             "world": (self.player.position.x,self.player.position.y),
-            "shop": (320,600),
+            "shop": [(320,600),(1376,352)],
             "dungeon": (400,400),
         }
 
@@ -65,15 +66,20 @@ class Game:
 
                 for warpTile in self.camera.warpTiles.sprites():
                     if warpTile.collide_rect(self.player.rect):
-                        self.player.setPos(self.warpCoordinates[warpTile.mapName])
+                        coords = None
+                        if self.current_map_name == "world":
+                            coords = self.warpCoordinates[warpTile.mapName][0]  #Warp to Other Location
+                        else:
+                            coords = self.warpCoordinates[warpTile.mapName][1]  #Warp to World Map Coordinates
+                        print(self.player.getPos())
+                        self.player.setPos(coords)
                         self.camera.setMap(self.maps[warpTile.mapName])
                         self.current_map = self.maps[warpTile.mapName]
+                        self.current_map_name = warpTile.mapName
 
 
                 #Make Camera Follow the Player
                 self.camera.setCameraPosition(self.player.getPos())
-
-
 
                 # DRAWING
                 self.window.fill(self.bg_color)
