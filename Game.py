@@ -29,7 +29,7 @@ class Game:
         self.event_manager.addGameObject(self.camera)
         self.warpCoordinates = {
             "world": (self.player.position.x,self.player.position.y),
-            "shop": (400,400),
+            "shop": (320,600),
             "dungeon": (400,400),
         }
 
@@ -64,7 +64,7 @@ class Game:
                         self.player.handleCollision()
 
                 for warpTile in self.camera.warpTiles.sprites():
-                    if sprite.collide_rect(self.player.rect):
+                    if warpTile.collide_rect(self.player.rect):
                         self.player.setPos(self.warpCoordinates[warpTile.mapName])
                         self.camera.setMap(self.maps[warpTile.mapName])
                         self.current_map = self.maps[warpTile.mapName]
