@@ -116,7 +116,7 @@ class Camera():
                                     self.view.blit(tile.image,tile.rect)
                                     if tile_code in WALL_SPRITES:
                                         self.focusedWalls.add(tile)
-                                    elif tile_code in WARP_SPRITES:
+                                    elif tile_code in WARP_LOCATIONS.keys():
                                         self.warpTiles.add( WarpTile(
                                             tileImage, (int(screen_x), int(screen_y)),
                                             (x_index * tile_width, y_index * tile_height),

@@ -58,4 +58,4 @@ class Player(Entity):
     def setPos(self,pos):
         self.position.x = pos[0]
         self.position.y = pos[1]
-        self.rect.topleft = pos
+        self.rect.center = pos
