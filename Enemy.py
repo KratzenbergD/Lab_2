@@ -14,9 +14,20 @@ class Enemy(Entity):
         super().__init__(sprite_img)
         self.max_hp = 10
         self.cur_hp = self.max_hp
+        self.aggro_rect = pygame.rect.Rect(self.rect.left - 200, self.rect.top - 200, 400, 400)
 
     def move(self, keys, dt):
-        pass
+        """ Enemy will remain stationary until player
+            approaches close enough to trigger movement."""
+
+    def handleCollision(self):
+        super().handleCollision()
+        print("Close enough to aggro")
 
     def update(self, keys, dt):
         self.move(keys, dt)
+
+    def draw(self, win, cameraPos):
+        super().draw(win, cameraPos)
+        pygame.draw.rect(self.image, pygame.color.THECOLORS['red'], self.aggro_rect, 1)
+        win.blit(self.image, (self.rect.left - cameraPos[0], self.rect.top - cameraPos[1], self.rect.w, self.rect.h))

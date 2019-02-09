@@ -5,6 +5,7 @@ from EventManager import *
 from Entity import *
 from Player import *
 from Camera import *
+from Enemy import *
 
 
 class Game:
@@ -23,11 +24,18 @@ class Game:
         self.running = False
         self.window = pygame.display.set_mode(screen_size)
         self.player = Player('images/star.png')
+        self.enemy = Enemy('images/luigi2.png')
+        self.enemy_list = [self.enemy]
         self.bg_color = (0,0,0)
         self.event_manager = EventManager()
         self.event_manager.addGameObject(self.player)
         self.camera = Camera(self.current_map)
         self.event_manager.addGameObject(self.camera)
+
+        # feel free to move this to its own method or wherever, just using for testing
+        for enemy in self.enemy_list:
+            self.event_manager.addGameObject(enemy)
+
         self.warpCoordinates = {
             "world": [(self.player.position.x,self.player.position.y)],
             "shop": [(320,590),(1360,334)],
@@ -48,6 +56,10 @@ class Game:
         for sprite in self.camera.focusedWalls.sprites():
             if sprite.collide_rect(self.player.rect):
                 self.player.handleCollision()
+
+        for enemy in self.enemy_list:
+            if enemy.aggro_rect.colliderect(self.player.rect):
+                enemy.handleCollision()
 
         for warpTile in self.camera.warpTiles.sprites():
             if warpTile.collide_rect(self.player.rect):
@@ -91,4 +103,6 @@ class Game:
                 self.window.fill(self.bg_color)
                 self.camera.draw(self.window)
                 self.player.draw(self.window,self.camera.pos)
+                for enemy in self.enemy_list:
+                    enemy.draw(self.window, self.camera.pos)
                 pygame.display.flip()
