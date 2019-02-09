@@ -1,6 +1,7 @@
 import pygame
 from config import *
 from tile import *
+from PickUps import *
 import math
 from WarpTile import *
 
@@ -112,17 +113,27 @@ class Camera():
                                     tileImage.set_colorkey(self.bg_color)
                                     screen_x = x_index*tile_width - self.pos[0]
                                     screen_y = y_index*tile_width - self.pos[1]
-                                    tile = Tile(tileImage, (int(screen_x), int(screen_y)),(x_index*tile_width,y_index*tile_height))
-                                    self.view.blit(tile.image,tile.rect)
+                                    tile = None
+
                                     if tile_code in WALL_SPRITES:
+                                        tile = Tile(tileImage, (int(screen_x), int(screen_y)),
+                                                    (x_index * tile_width, y_index * tile_height))
                                         self.focusedWalls.add(tile)
                                     elif tile_code in WARP_LOCATIONS.keys():
-                                        self.warpTiles.add( WarpTile(
+                                        tile = WarpTile(
                                             tileImage, (int(screen_x), int(screen_y)),
                                             (x_index * tile_width, y_index * tile_height),
                                             tile_code
-                                        ))
+                                        )
+                                        self.warpTiles.add(tile)
+                                    elif tile_code in CHESTS:
+                                        tile = PickUp(tileImage, (int(screen_x), int(screen_y)),(x_index*tile_width,y_index*tile_height))
+                                        self.interactiveTiles.add(tile)
+                                    else:
+                                        tile = Tile(tileImage, (int(screen_x), int(screen_y)),
+                                                    (x_index * tile_width, y_index * tile_height))
 
+                                    self.view.blit(tile.image, tile.rect)
                                     self.focusedTiles.add(tile)
 
 

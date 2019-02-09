@@ -4,7 +4,7 @@
 
 
 from Entity import *
-
+from PickUps import *
 
 class Player(Entity):
     """ This class handles all things
@@ -17,6 +17,7 @@ class Player(Entity):
         self.hp_bar_width = 80
         self.hp_rect = pygame.rect.Rect(10, 10, self.hp_bar_width, 15)
         self.hp_rect_frame = pygame.rect.Rect(10, 10, self.hp_bar_width, 15)
+        self.inventory = {}
 
     def draw(self, win,cameraPos):
         """ The Player draw method.
@@ -59,3 +60,9 @@ class Player(Entity):
         self.position.x = pos[0]
         self.position.y = pos[1]
         self.rect.center = pos
+
+    def interact(self,interactable):
+        if interactable.contents not in self.inventory.keys():
+            self.inventory[interactable.contents] = 0
+
+        self.inventory[interactable.contents] += interactable.amount

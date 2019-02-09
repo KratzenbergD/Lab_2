@@ -6,4 +6,8 @@ WARP_LOCATIONS = {
     770: "shop",  #this is the to map warp
     196: "world"  #this would be the return warp tile
 }
-INTERACTIVE_SPRITES = []
+CHESTS = [7]
+
+COLLECTABLES = {
+    "gold": (5,20),
+}

@@ -44,6 +44,28 @@ class Game:
             the game loop to stop."""
         self.running = False
 
+    def collisionDetection(self):
+        for sprite in self.camera.focusedWalls.sprites():
+            if sprite.collide_rect(self.player.rect):
+                self.player.handleCollision()
+
+        for warpTile in self.camera.warpTiles.sprites():
+            if warpTile.collide_rect(self.player.rect):
+                if self.current_map_name == "world":
+                    coords = self.warpCoordinates[warpTile.mapName][0]  # Warp To
+                else:
+                    coords = self.warpCoordinates[self.current_map_name][1]  # Warp From
+                self.player.setPos(coords)
+                self.camera.setMap(self.maps[warpTile.mapName])
+                self.current_map = self.maps[warpTile.mapName]
+                self.current_map_name = warpTile.mapName
+
+        for interactable in self.camera.interactiveTiles.sprites():
+            if interactable.collide_rect(self.player.rect):
+                self.player.interact(interactable)
+                interactable.updateMap(self.camera.map)
+
+
     def runGameLoop(self):
         """ This method handles the main game loop."""
         while self.running:
@@ -60,24 +82,7 @@ class Game:
                 self.event_manager.process_input(dt)
 
                 #Collision Detection
-                for sprite in self.camera.focusedWalls.sprites():
-                    if sprite.collide_rect(self.player.rect):
-                        self.player.handleCollision()
-
-                for warpTile in self.camera.warpTiles.sprites():
-                    if warpTile.collide_rect(self.player.rect):
-                        coords = None
-                        current_map = self.current_map_name
-                        if self.current_map_name == "world":
-                            coords = self.warpCoordinates[warpTile.mapName][0]  #Warp To
-                        else:
-                            coords = self.warpCoordinates[self.current_map_name][1]  #Warp From
-                        self.player.setPos(coords)
-                        self.camera.setMap(self.maps[warpTile.mapName])
-                        self.current_map = self.maps[warpTile.mapName]
-                        self.current_map_name = warpTile.mapName
-
-
+                self.collisionDetection()
 
                 #Make Camera Follow the Player
                 self.camera.setCameraPosition(self.player.getPos())
