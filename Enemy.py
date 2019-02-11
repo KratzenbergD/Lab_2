@@ -15,16 +15,26 @@ class Enemy(Entity):
         self.max_hp = 10
         self.cur_hp = self.max_hp
         self.aggro_rect = pygame.rect.Rect(self.rect.left - 200, self.rect.top - 200, 400, 400)
+        self.aggro_active = False
 
         #self.rect = pygame.rect.Rect(self.world_rect)
 
-    def move(self, keys, dt):
+    def chasePlayer(self, player):
         """ Enemy will remain stationary until player
             approaches close enough to trigger movement."""
+        if self.aggro_active:
+            # testing
+            self.position = player.getPos()
+            self.aggro_rect = pygame.rect.Rect(self.rect.left - 200, self.rect.top - 200, 400, 400)
+
+    def activateAggro(self):
+        self.aggro_active = True
+
+    def deactivateAggro(self):
+        self.aggro_active = False
 
     def handleCollision(self):
         super().handleCollision()
-        print("Close enough to aggro")
 
     def update(self, keys, dt):
         self.move(keys, dt)
@@ -32,10 +42,11 @@ class Enemy(Entity):
     def draw(self, win, cameraPos):
         super().draw(win, cameraPos)
         win.blit(self.image, (self.rect.left - cameraPos[0], self.rect.top - cameraPos[1], self.rect.w, self.rect.h))
-        screenRect = pygame.Rect(
-            self.aggro_rect.left - cameraPos[0],
-            self.aggro_rect.top - cameraPos[1],
-            self.aggro_rect.w,
-            self.aggro_rect.h
-        )
-        pygame.draw.rect(win,pygame.color.THECOLORS['red'],screenRect,1)
+        if self.debug:
+            screenRect = pygame.Rect(
+                self.aggro_rect.left - cameraPos[0],
+                self.aggro_rect.top - cameraPos[1],
+                self.aggro_rect.w,
+                self.aggro_rect.h
+            )
+            pygame.draw.rect(win,pygame.color.THECOLORS['red'], screenRect, 1)
