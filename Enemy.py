@@ -8,7 +8,7 @@ from Entity import *
 
 class Enemy(Entity):
     """ This class handles all things
-        enemy-related."""
+        enemy-related. addded some nonsense"""
 
     def __init__(self, sprite_img):
         super().__init__(sprite_img)
