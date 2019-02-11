@@ -60,7 +60,8 @@ class Game:
         for enemy in self.enemy_list:
             if enemy.aggro_rect.colliderect(self.player.rect):
                 enemy.handleCollision()
-
+                enemy.activateAggro()
+                enemy.chasePlayer(self.player)
         for warpTile in self.camera.warpTiles.sprites():
             if warpTile.collide_rect(self.player.rect):
                 if self.current_map_name == "world":
