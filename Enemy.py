@@ -23,8 +23,17 @@ class Enemy(Entity):
 
         #self.rect = pygame.rect.Rect(self.world_rect)
 
+    def placeEnemy(self,x,y):
+        self.position.x = x
+        self.position.y = y
+        self.prevPos.x = x
+        self.prevPos.y = y
+        self.rect.center = (int(x),int(y))
+        self.aggro_rect.center = self.rect.center
+
     def move(self, keys, dt):
         if self.heading.length() > 0:
+            self.prevPos = self.position
             self.velocity = self.heading
             if self.velocity.length() > self.max_speed:
                 self.velocity.scale_to_length(self.speed)

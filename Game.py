@@ -67,6 +67,29 @@ class Game:
         for wall in self.camera.focusedWalls.sprites():
             if self.player.rect.colliderect(wall.world_rect):
                 self.player.handleCollision(wall.world_rect)
+                while self.player.isStuck:
+                    print("Player is stuck")
+                    scalar = 1
+                    checkRect = self.player.rect.copy()
+                    for i in range(360):
+                        vecX = math.cos(math.radians(i)) * scalar
+                        vecY = math.sin(math.radians(i)) * scalar
+                        pushVec = vec(vecX,vecY)
+                        pushVec.scale_to_length(scalar)
+                        locationToCheck = self.player.position + pushVec
+                        checkRect.center = (int(locationToCheck.x),int(locationToCheck.y))
+                        colliding = False
+                        for wall in self.camera.focusedWalls.sprites():
+                            if checkRect.colliderect(wall.rect):
+                                colliding = True
+                                break
+                        if not colliding:
+                            self.player.noLongerStuck()
+                            self.player.position.x,self.player.position.y = checkRect.center
+                            self.player.rect = checkRect
+
+
+
 
         for wall in self.camera.focusedWalls.sprites():
             for enemy in self.current_map.enemy_list.sprites():
@@ -80,9 +103,17 @@ class Game:
                 else:
                     coords = self.warpCoordinates[self.current_map_name][1]  # Warp From
                 self.player.setPos(coords)
+
+                print(len(self.current_map.enemy_list))
+                for enemy in self.current_map.enemy_list:
+                    self.event_manager.removeGameObject(enemy)
+
                 self.camera.setMap(self.maps[warpTile.mapName])
                 self.current_map = self.maps[warpTile.mapName]
                 self.current_map_name = warpTile.mapName
+                print(len(self.current_map.enemy_list))
+                for enemy in self.current_map.enemy_list:
+                    self.event_manager.addGameObject(enemy)
 
         for interactable in self.camera.interactiveTiles.sprites():
             if self.player.rect.colliderect(interactable.world_rect):

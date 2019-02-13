@@ -16,11 +16,17 @@ class Entity(pygame.sprite.Sprite):
 
     def __init__(self, sprite_img):
         super().__init__()
-        self.image = pygame.Surface((default_size, default_size))
-        self.sprite_img = pygame.image.load(sprite_img)
+        self.image = None
+        if type(sprite_img) is str:
+            self.image = pygame.Surface((default_size, default_size))
+            self.sprite_img = pygame.image.load(sprite_img)
+        else:
+            self.image = sprite_img
+            self.sprite_img = sprite_img
+
         self.sprite_img = pygame.transform.scale(self.sprite_img, (default_size, default_size))
         self.image.set_colorkey(pygame.color.THECOLORS['black'])
-        self.rect = self.image.get_rect()
+        self.rect = self.sprite_img.get_rect()
         self.prevPos = vec(400, 400)
         self.position = vec(400, 400)
         self.rect.center = (int(self.position.x),int(self.position.y))
@@ -29,6 +35,7 @@ class Entity(pygame.sprite.Sprite):
         self.vertical_accel = vec(0.0, -3)  # accel vector pointing upward
         self.max_speed = 10
         self.debug = False
+        self.isStuck = False
 
     def toggleDebug(self):
         """ This method toggles debug mode
@@ -86,17 +93,20 @@ class Entity(pygame.sprite.Sprite):
             The Entity's previous position is stored
             so that they can be moved back in the event
             of a wall collision."""
-        ### CANNOT WALLSLIDE PERFECTLY
-
+        ### CANNOT WALLSLIDE PERFECTLY GETS STUCK IN CORNER
+        if self.velocity.length() == 0:
+            return
         # Walk back a step
         tempPos = self.prevPos
         tempPos -= self.velocity
+
+        wallPushVector = -self.velocity
 
         validLocation = self.rect.copy()
         validLocation.center = (int(tempPos.x), int(tempPos.y))
 
         while otherRect.colliderect(validLocation):
-            tempPos -= self.velocity
+            tempPos += wallPushVector
             validLocation.center = (int(tempPos.x), int(tempPos.y))
 
         validX, validY = tempPos
@@ -147,5 +157,7 @@ class Entity(pygame.sprite.Sprite):
             pygame.draw.rect(self.image, pygame.color.THECOLORS['red'], (0, 0, self.rect.w, self.rect.h), 1)
         win.blit(self.image, (self.rect.left - cameraPos[0],self.rect.top - cameraPos[1],self.rect.w,self.rect.h))
 
+    def noLongerStuck(self):
+        self.isStuck = False
 
 
