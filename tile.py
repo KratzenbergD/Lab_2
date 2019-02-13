@@ -15,7 +15,7 @@ class Tile(pygame.sprite.Sprite):
         self.world_rect = pygame.Rect(world_coordinates,(self.rect.w,self.rect.h))
 
 
-    def collide_rect(self,otherRect):
+    def colliderect(self,otherRect):
         return self.world_rect.colliderect(otherRect)
 
     def draw(self,win):

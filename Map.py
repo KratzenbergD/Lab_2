@@ -6,6 +6,7 @@ from maploader import loadMap
 import pygame
 from config import *
 from tile import Tile
+from Enemy import *
 
 
 class Map:
@@ -28,4 +29,7 @@ class Map:
         self.tiles_wide = self.sprite_sheet.get_width() // self.header_data['tilewidth']
         self.tiles_high = self.sprite_sheet.get_height() // self.header_data['tileheight']
         r,g,b,a = tuple(self.header_data['background_color']) if 'background_color' in self.header_data.keys() else (0,0,0,255)
-
+        self.boundary = pygame.Rect(0,0,self.totalMapWidth,self.totalMapHeight)
+        self.enemy = Enemy('images/luigi2.png')
+        self.enemy_list = pygame.sprite.Group()
+        self.enemy_list.add(self.enemy)

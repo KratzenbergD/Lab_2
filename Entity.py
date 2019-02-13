@@ -4,6 +4,7 @@
 
 import pygame
 import random
+import math
 from config import *
 vec = pygame.math.Vector2
 
@@ -80,17 +81,30 @@ class Entity(pygame.sprite.Sprite):
             Will most likely be overridden by derived classes."""
         self.move(keys, dt)
 
-    def handleCollision(self):
+    def handleCollision(self,otherRect):
         """ The generic collision detection method.
             The Entity's previous position is stored
             so that they can be moved back in the event
             of a wall collision."""
         ### CANNOT WALLSLIDE PERFECTLY
 
-        self.position = self.prevPos - self.velocity
-        self.velocity.x = 0
-        self.velocity.y = 0
-        self.rect.center = (int(self.position.x), int(self.position.y))
+        self.position -= self.velocity
+        self.velocity = vec(0,0)
+
+        self.rect.center = (int(self.position.x),int(self.position.y))
+
+    def boundsCheck(self,worldBoundary):
+        boundedRect = self.rect.clamp(worldBoundary)
+        bX,bY = boundedRect.center
+        self.rect = boundedRect
+
+        if bX != int(self.position.x):
+            self.position.x = bX
+            self.velocity.x = 0
+
+        if bY != int(self.position.y):
+            self.position.y = bY
+            self.velocity.y = 0
 
     def draw(self, win, cameraPos):
         """ The generic Entity draw method.
