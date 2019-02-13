@@ -67,13 +67,11 @@ class Game:
         for wall in self.camera.focusedWalls.sprites():
             if self.player.rect.colliderect(wall.world_rect):
                 self.player.handleCollision(wall.world_rect)
-                break
 
         for wall in self.camera.focusedWalls.sprites():
             for enemy in self.current_map.enemy_list.sprites():
                 if enemy.rect.colliderect(wall.world_rect):
                     enemy.handleCollision(wall.world_rect)
-                    break
 
         for warpTile in self.camera.warpTiles.sprites():
             if self.player.rect.colliderect(warpTile.world_rect):

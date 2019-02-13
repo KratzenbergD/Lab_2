@@ -4,6 +4,7 @@
 
 
 from Entity import *
+import pygame
 import math
 
 class Enemy(Entity):
@@ -14,7 +15,8 @@ class Enemy(Entity):
         super().__init__(sprite_img)
         self.max_hp = 10
         self.cur_hp = self.max_hp
-        self.aggro_rect = pygame.rect.Rect(self.rect.left - 200, self.rect.top - 200, 400, 400)
+        self.aggro_rect = pygame.Rect(0,0, 400, 400)
+        self.aggro_rect.center = self.rect.center
         self.aggro_active = False
         self.heading = vec(0,0)
         self.speed = 2

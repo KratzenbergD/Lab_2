@@ -88,10 +88,44 @@ class Entity(pygame.sprite.Sprite):
             of a wall collision."""
         ### CANNOT WALLSLIDE PERFECTLY
 
-        self.position -= self.velocity
-        self.velocity = vec(0,0)
+        # Walk back a step
+        tempPos = self.prevPos
+        tempPos -= self.velocity
 
-        self.rect.center = (int(self.position.x),int(self.position.y))
+        validLocation = self.rect.copy()
+        validLocation.center = (int(tempPos.x), int(tempPos.y))
+
+        while otherRect.colliderect(validLocation):
+            tempPos -= self.velocity
+            validLocation.center = (int(tempPos.x), int(tempPos.y))
+
+        validX, validY = tempPos
+        tempRect = validLocation.copy()
+
+        tempRect.center = (int(validX + self.velocity.x), int(validY))
+
+        if otherRect.colliderect(tempRect):
+            print("Resetting X")
+            self.velocity.x = 0
+        else:
+            validX = tempRect.center[0]
+
+        tempRect.center = (int(validX), int(validY + self.velocity.y))
+
+        if otherRect.colliderect(tempRect):
+            print("Resetting Y")
+            self.velocity.y = 0
+        else:
+            validY = tempRect.center[1]
+
+        self.rect.center = (validX, validY)
+        self.position = vec(validX, validY)
+
+        # self.position = self.prevPos
+        # self.position -= self.velocity
+        # self.velocity = vec(0,0)
+        #
+        # self.rect.center = (int(self.position.x),int(self.position.y))
 
     def boundsCheck(self,worldBoundary):
         boundedRect = self.rect.clamp(worldBoundary)
