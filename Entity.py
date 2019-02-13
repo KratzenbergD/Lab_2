@@ -105,7 +105,6 @@ class Entity(pygame.sprite.Sprite):
         tempRect.center = (int(validX + self.velocity.x), int(validY))
 
         if otherRect.colliderect(tempRect):
-            print("Resetting X")
             self.velocity.x = 0
         else:
             validX = tempRect.center[0]
@@ -113,7 +112,6 @@ class Entity(pygame.sprite.Sprite):
         tempRect.center = (int(validX), int(validY + self.velocity.y))
 
         if otherRect.colliderect(tempRect):
-            print("Resetting Y")
             self.velocity.y = 0
         else:
             validY = tempRect.center[1]
