@@ -22,11 +22,10 @@ class Player(Entity):
             "gold":0
         }
         self.fontColor = pygame.color.THECOLORS['gold']
-        self.fontSurf = self.font.render("Gold: " + str(self.inventory['gold']),False,self.fontColor)
+        self.fontSurf = self.font.render("Gold: " + str(self.inventory['gold'])+ "/100",False,self.fontColor)
         self.fontRect = self.fontSurf.get_rect()
         self.fontRect.top = self.hp_rect_frame.bottom + 10
         self.fontRect.left = self.hp_rect_frame.left
-
 
     def draw(self, win,cameraPos):
         """ The Player draw method.
@@ -76,7 +75,7 @@ class Player(Entity):
             self.inventory[interactable.contents] = 0
 
         self.inventory[interactable.contents] += interactable.amount
-        self.fontSurf = self.font.render("Gold: " + str(self.inventory['gold']),False,self.fontColor)
+        self.fontSurf = self.font.render("Gold: " + str(self.inventory['gold']) + "/100",False,self.fontColor)
         self.fontRect = self.fontSurf.get_rect()
         self.fontRect.top = self.hp_rect_frame.bottom + 10
         self.fontRect.left = self.hp_rect_frame.left

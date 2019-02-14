@@ -4,6 +4,7 @@ from tile import *
 from PickUps import *
 import math
 from WarpTile import *
+from Enemy import *
 
 class Camera():
 
@@ -106,6 +107,7 @@ class Camera():
                                     source_y = tile_code // self.map.tiles_wide
                                     top_x = (source_x * tile_width + source_x * gap_x)
                                     top_y = source_y * tile_height + source_y * gap_y
+
                                     tileImage = pygame.Surface((tile_width, tile_height))
 
                                     tileImage.blit(self.map.sprite_sheet, (0, 0),
@@ -115,26 +117,39 @@ class Camera():
                                     screen_y = y_index*tile_width - self.pos[1]
                                     tile = None
 
-                                    if tile_code in WALL_SPRITES:
-                                        tile = Tile(tileImage, (int(screen_x), int(screen_y)),
-                                                    (x_index * tile_width, y_index * tile_height))
-                                        self.focusedWalls.add(tile)
-                                    elif tile_code in WARP_LOCATIONS.keys():
-                                        tile = WarpTile(
-                                            tileImage, (int(screen_x), int(screen_y)),
-                                            (x_index * tile_width, y_index * tile_height),
-                                            tile_code
-                                        )
-                                        self.warpTiles.add(tile)
-                                    elif tile_code in CHESTS:
-                                        tile = PickUp(tileImage, (int(screen_x), int(screen_y)),(x_index*tile_width,y_index*tile_height))
-                                        self.interactiveTiles.add(tile)
-                                    else:
-                                        tile = Tile(tileImage, (int(screen_x), int(screen_y)),
-                                                    (x_index * tile_width, y_index * tile_height))
+                                    if tile_code in ENEMY_SPRITES:
+                                            enemyImage = pygame.Surface((tile_width, tile_height))
 
-                                    self.view.blit(tile.image, tile.rect)
-                                    self.focusedTiles.add(tile)
+                                            enemyImage.blit(self.sprite_sheet, (0, 0),
+                                                            pygame.Rect(top_x, top_y, tile_width, tile_height))
+                                            enemyImage.set_colorkey(self.bg_color)
+                                            enemy = Enemy(enemyImage)
+                                            enemy.placeEnemy((x_index * tile_width + enemy.rect.w / 2),
+                                                             (y_index * tile_height + enemy.rect.h / 2))
+                                            self.layer_data[i][y_index][x_index] = 0
+                                            self.enemy_list.add(enemy)
+                                    else:
+
+                                        if tile_code in WALL_SPRITES:
+                                            tile = Tile(tileImage, (int(screen_x), int(screen_y)),
+                                                        (x_index * tile_width, y_index * tile_height))
+                                            self.focusedWalls.add(tile)
+                                        elif tile_code in WARP_LOCATIONS.keys():
+                                            tile = WarpTile(
+                                                tileImage, (int(screen_x), int(screen_y)),
+                                                (x_index * tile_width, y_index * tile_height),
+                                                tile_code
+                                            )
+                                            self.warpTiles.add(tile)
+                                        elif tile_code in CHESTS:
+                                            tile = PickUp(tileImage, (int(screen_x), int(screen_y)),(x_index*tile_width,y_index*tile_height))
+                                            self.interactiveTiles.add(tile)
+                                        else:
+                                            tile = Tile(tileImage, (int(screen_x), int(screen_y)),
+                                                        (x_index * tile_width, y_index * tile_height))
+
+                                        self.view.blit(tile.image, tile.rect)
+                                        self.focusedTiles.add(tile)
 
 
 
