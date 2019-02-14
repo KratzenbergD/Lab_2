@@ -3,7 +3,7 @@ default_size = 20
 
 WALL_SPRITES = [1216, 287, 908, 284, 266, 1145, 1024] #List of indices of wall sprites
 
-ENEMY_SPRITES = [4291]
+ENEMY_SPRITES = [1824]
 
 WARP_LOCATIONS = {
     769: "shop",  #this is the to map warp
@@ -14,5 +14,5 @@ WARP_LOCATIONS = {
 CHESTS = [6]
 
 COLLECTABLES = {
-    "gold": (5,20),
+    "gold": (10,20),
 }

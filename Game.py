@@ -61,6 +61,9 @@ class Game:
             if enemy.aggro_rect.colliderect(self.player.rect):
                 enemy.activateAggro()
                 enemy.chasePlayer(self.player)
+                if enemy.rect.colliderect(self.player.rect):
+                    self.player.take_damage()
+                    enemy.reverseVelocity(self.player)
             else:
                 enemy.deactivateAggro()
 
@@ -111,9 +114,14 @@ class Game:
 
                 # Game Input
                 self.event_manager.process_input(dt)
+                if not self.running:
+                    break
 
                 #Collision Detection
                 self.collisionDetection()
+
+                if self.player.inventory['gold'] >= 100 or self.player.cur_hp <= 0:
+                    self.running = False
 
                 #Make Camera Follow the Player
                 self.camera.setCameraPosition(self.player.getPos())

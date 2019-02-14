@@ -31,10 +31,15 @@ class Enemy(Entity):
         self.rect.center = (int(x),int(y))
         self.aggro_rect.center = self.rect.center
 
+    def reverseVelocity(self,player):
+        self.position -= self.heading*(self.rect.w/2)
+        self.velocity = -2*self.velocity
+        self.heading = -self.heading
+
     def move(self, keys, dt):
         if self.heading.length() > 0:
             self.prevPos = self.position
-            self.velocity = self.heading
+            self.velocity += self.heading
             if self.velocity.length() > self.max_speed:
                 self.velocity.scale_to_length(self.speed)
             self.position += self.velocity
@@ -46,7 +51,6 @@ class Enemy(Entity):
         dx = playerPos[0] - self.position.x
         heading = math.atan2(dy,dx)
         chaseVector = vec(math.cos(heading),math.sin(heading))
-        chaseVector.scale_to_length(self.speed)
         self.heading = chaseVector
 
     def chasePlayer(self, player):

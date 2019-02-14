@@ -31,8 +31,8 @@ class Entity(pygame.sprite.Sprite):
         self.position = vec(400, 400)
         self.rect.center = (int(self.position.x),int(self.position.y))
         self.velocity = vec(0, 0)
-        self.lateral_accel = vec(3, 0.0)  # accel vector pointing to the right
-        self.vertical_accel = vec(0.0, -3)  # accel vector pointing upward
+        self.lateral_accel = vec(10, 0.0)  # accel vector pointing to the right
+        self.vertical_accel = vec(0.0, -10)  # accel vector pointing upward
         self.max_speed = 10
         self.debug = False
         self.isStuck = False
