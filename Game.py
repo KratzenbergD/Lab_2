@@ -68,7 +68,6 @@ class Game:
             if self.player.rect.colliderect(wall.world_rect):
                 self.player.handleCollision(wall.world_rect)
                 while self.player.isStuck:
-                    print("Player is stuck")
                     scalar = 1
                     checkRect = self.player.rect.copy()
                     for i in range(360):
@@ -104,16 +103,16 @@ class Game:
                     coords = self.warpCoordinates[self.current_map_name][1]  # Warp From
                 self.player.setPos(coords)
 
-                print(len(self.current_map.enemy_list))
                 for enemy in self.current_map.enemy_list:
                     self.event_manager.removeGameObject(enemy)
 
                 self.camera.setMap(self.maps[warpTile.mapName])
                 self.current_map = self.maps[warpTile.mapName]
                 self.current_map_name = warpTile.mapName
-                print(len(self.current_map.enemy_list))
+
                 for enemy in self.current_map.enemy_list:
                     self.event_manager.addGameObject(enemy)
+                print(len(self.current_map.enemy_list))
 
         for interactable in self.camera.interactiveTiles.sprites():
             if self.player.rect.colliderect(interactable.world_rect):

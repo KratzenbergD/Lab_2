@@ -1,17 +1,17 @@
 screen_size = (800, 600)
 default_size = 20
 
-WALL_SPRITES = [1217, 288, 909, 285, 267, 1146, 1025] #List of indices of wall sprites
+WALL_SPRITES = [1216, 287, 908, 284, 266, 1145, 1024] #List of indices of wall sprites
 
-ENEMY_SPRITES = [4017]
+ENEMY_SPRITES = [4291]
 
 WARP_LOCATIONS = {
-    770: "shop",  #this is the to map warp
-    196: "world",  #this would be the return warp tile
-    829: "dungeon",
-    759: "world",
+    769: "shop",  #this is the to map warp
+    195: "world",  #this would be the return warp tile
+    828: "dungeon",
+    758: "world",
 }
-CHESTS = [7]
+CHESTS = [6]
 
 COLLECTABLES = {
     "gold": (5,20),

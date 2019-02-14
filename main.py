@@ -9,6 +9,7 @@ from Game import *
 
 # Initialization
 pygame.init()
+pygame.font.init()
 pygame.joystick.init()
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 

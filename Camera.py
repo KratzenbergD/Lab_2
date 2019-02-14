@@ -95,14 +95,14 @@ class Camera():
             layer = self.map.layer_data[i]
             for y_index in range(row,int(row+num_tiles_y)):
                 if y_index >= 0 and y_index < map_height:
-                    current_row = layer[y_index]   # FIXED
+                    current_row = layer[y_index]
                     for x_index in range(col,col + num_tiles_x):
                         check = (x_index,y_index)
                         if x_index >= 0 and x_index < map_width:
                             if check not in onScreenIndexes:
                                 tile_code = current_row[x_index]
                                 if tile_code:
-                                    source_x = (tile_code - 1) % self.map.tiles_wide
+                                    source_x = (tile_code) % self.map.tiles_wide
                                     source_y = tile_code // self.map.tiles_wide
                                     top_x = (source_x * tile_width + source_x * gap_x)
                                     top_y = source_y * tile_height + source_y * gap_y

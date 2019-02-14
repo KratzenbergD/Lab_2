@@ -17,7 +17,16 @@ class Player(Entity):
         self.hp_bar_width = 80
         self.hp_rect = pygame.rect.Rect(10, 10, self.hp_bar_width, 15)
         self.hp_rect_frame = pygame.rect.Rect(10, 10, self.hp_bar_width, 15)
-        self.inventory = {}
+        self.font = pygame.font.Font("./fonts/HanaleiFill-Regular.ttf",30)
+        self.inventory = {
+            "gold":0
+        }
+        self.fontColor = pygame.color.THECOLORS['gold']
+        self.fontSurf = self.font.render("Gold: " + str(self.inventory['gold']),False,self.fontColor)
+        self.fontRect = self.fontSurf.get_rect()
+        self.fontRect.top = self.hp_rect_frame.bottom + 10
+        self.fontRect.left = self.hp_rect_frame.left
+
 
     def draw(self, win,cameraPos):
         """ The Player draw method.
@@ -26,6 +35,7 @@ class Player(Entity):
         super().draw(win,cameraPos)
         pygame.draw.rect(win, (0, 0, 255), self.hp_rect)
         pygame.draw.rect(win, (255, 255, 255), self.hp_rect_frame, 2)
+        win.blit(self.fontSurf,self.fontRect)
 
     def update(self, keys, dt):
         """ The Player update method.
@@ -66,3 +76,7 @@ class Player(Entity):
             self.inventory[interactable.contents] = 0
 
         self.inventory[interactable.contents] += interactable.amount
+        self.fontSurf = self.font.render("Gold: " + str(self.inventory['gold']),False,self.fontColor)
+        self.fontRect = self.fontSurf.get_rect()
+        self.fontRect.top = self.hp_rect_frame.bottom + 10
+        self.fontRect.left = self.hp_rect_frame.left

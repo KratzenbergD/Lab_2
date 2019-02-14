@@ -44,8 +44,8 @@ class Map:
                 for x in range(len(col)):
                     tilecode = col[x]
                     if tilecode in ENEMY_SPRITES:
-                        source_x = (tilecode - 1) % self.tiles_wide
-                        source_y = tilecode // self.tiles_wide
+                        source_x = (tilecode) % self.tiles_wide
+                        source_y = (tilecode) // self.tiles_high
                         top_x = (source_x * tilewidth + source_x * gap_x)
                         top_y = source_y * tileheight + source_y * gap_y
                         enemyImage = pygame.Surface((tilewidth, tileheight))
@@ -57,5 +57,3 @@ class Map:
                         enemy.placeEnemy((x*tilewidth+enemy.rect.w/2),(y*tileheight + enemy.rect.h/2))
                         self.layer_data[i][y][x] = 0
                         self.enemy_list.add(enemy)
-
-        print(len(self.enemy_list.sprites()))
